@@ -12,7 +12,9 @@ import {
   TextField,
   InputAdornment,
   FormGroup,
-  Checkbox
+  Checkbox,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import {
   ChatOutlined,
@@ -22,6 +24,8 @@ import {
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../../pages/User/dashboard";
+
+
 let initValues = {
   channel: "",
   delay: 250,
@@ -41,7 +45,18 @@ export const ShoutoutGeneral = (props) => {
   console.log(contextValue);
   
   const [genSettings, setGenSettings] = useState(initValues);
-  
+  const [state,setState] = useState({
+    succcessOpen: false,
+    failedOpen: false
+  });
+
+  const {successOpen, failedOpen} = state;
+
+  const handleClose = () => {
+    setState({succcessOpen: false,
+      failedOpen: false});
+  };
+
   useEffect(() => {
     if(contextValue && contextValue.channel !== ""){
       setGenSettings(contextValue);
@@ -60,9 +75,11 @@ export const ShoutoutGeneral = (props) => {
       .post(updateSettingsURL, data)
       .then((res) => {
         console.log(res);
+        setState({...state, successOpen: true})
       })
       .catch((err) => {
         console.log(err);
+        setState({...state, failedOpen: true})
       });
   };
 
@@ -261,6 +278,23 @@ export const ShoutoutGeneral = (props) => {
             Save
           </Button>
         </Box>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={successOpen}
+          onClose={handleClose}
+          key="snackSave"
+          severity="success"
+        >
+           <Alert severity="success" variant="filled">Settings Saved!</Alert>
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={failedOpen}
+          onClose={handleClose}
+          message="Oops! Something went wrong."
+          key="snackFail"
+          severity="error"
+        />
       </Card>
     </form>
   );

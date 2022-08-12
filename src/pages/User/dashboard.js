@@ -6,12 +6,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-
+import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Avatar from '@mui/material/Avatar';
 
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -43,6 +44,7 @@ function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [channelName, setChannelName] = React.useState("");
+  const [channelAvatar, setChannelAvatar] = React.useState("");
   const [genSettings, setGenSettings] = React.useState(initValues);
 
   let navigate = useNavigate();
@@ -50,6 +52,7 @@ function ResponsiveDrawer(props) {
   React.useEffect(() => {
     if (localStorage.getItem("curUser")) {
       setChannelName(JSON.parse(localStorage.getItem("curUser")).name);
+      setChannelAvatar(JSON.parse(localStorage.getItem("curUser")).avatar);
       let genSettingsURL =
         process.env.REACT_APP_APIURL + "/channels/" + JSON.parse(localStorage.getItem("curUser")).name;
 
@@ -71,7 +74,10 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar >
+        <Avatar alt={channelName} src={channelAvatar}></Avatar>
+        <Button>{channelName}</Button>
+      </Toolbar>
       <Divider />
       <List>
         <ListItem key={"ShoutOuts"} disablePadding>
