@@ -1,27 +1,8 @@
 import { Box, Container, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { ShoutoutGeneral } from "../../components/shoutout/shoutout-general";
 
-const ShoutOut = () => {
-
-  let curUser = {};
-  const [channelName, setChannelName] = useState("");
-
-  let navigate = useNavigate();
- 
-  useEffect(() => {
-    if(localStorage.getItem("curUser"))
-    {
-      curUser = JSON.parse(localStorage.getItem("curUser"))
-      setChannelName(curUser.name);
-    }else{
-      navigate("/")
-    }
-  }, [])
-   
+const ShoutOut = (props) => {
   
-   
   return (
     <>
       <Box
@@ -35,8 +16,7 @@ const ShoutOut = () => {
           <Typography sx={{ mb: 3 }} variant="h4">
             ShoutOuts Settings
           </Typography>
-          <ShoutoutGeneral channelname={channelName}/>
-          
+          <ShoutoutGeneral />
         </Container>
       </Box>
     </>

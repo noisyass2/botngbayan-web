@@ -17,27 +17,58 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
-  GroupOutlined,
-  SettingsSuggestOutlined,
   ForumOutlined,
   Menu,
-  MoveToInbox,
   MarkUnreadChatAltOutlined
 } from "@mui/icons-material/";
-
-
+import axios from "axios";
+let initValues = {
+  channel: "",
+  delay: 250,
+  enabled: true,
+  soCommand: "so",
+  soMessageEnabled: true,
+  soMessageTemplate: "",
+  filters: {
+    vip: true,
+    mod: true,
+    sub: true,
+    any: true
+  }
+};
 const drawerWidth = 240;
-export const UserContext = React.createContext("Guest");
-
+export const UserContext = React.createContext(initValues);
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [channelName, setChannelName] = React.useState("");
+  const [genSettings, setGenSettings] = React.useState(initValues);
+
+  let navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (localStorage.getItem("curUser")) {
+      setChannelName(JSON.parse(localStorage.getItem("curUser")).name);
+      let genSettingsURL =
+        process.env.REACT_APP_APIURL + "/channels/" + JSON.parse(localStorage.getItem("curUser")).name;
+
+      axios.get(genSettingsURL).then((res) => {
+        console.log("RESDATA");
+        if(!res.data.message){
+          setGenSettings(res.data);
+        }
+      });
+    } else {
+      navigate("/");
+    }
+  }, [navigate]);
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  let navigate = useNavigate();
+
   const drawer = (
     <div>
       <Toolbar />
@@ -75,8 +106,6 @@ function ResponsiveDrawer(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
-  
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -149,8 +178,8 @@ function ResponsiveDrawer(props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <UserContext.Provider value="Guest" >
-          <Outlet />
+        <UserContext.Provider value={genSettings} >
+          <Outlet channelName={channelName}/>
         </UserContext.Provider>
       </Box>
     </Box>

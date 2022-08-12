@@ -1,14 +1,12 @@
 
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { AccountProfile, setUser } from '../../components/account/account-profile';
-import { AccountProfileDetails } from '../../components/account/account-profile-details';
+
 import { useLocation } from 'react-router';
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import queryString from 'query-string';
 import axios from "axios";
-
-// http://localhost:3000/dashboard/redirect#access_token=p6tqf0h4ccl3f53it3rgwekafuqpqp&scope=user%3Aread%3Aemail+user%3Aread%3Afollows&state=undefined&token_type=bearer
 
 const Account = () => {
   const location = useLocation();
@@ -21,19 +19,7 @@ const Account = () => {
     name: '',
     timezone: 'GTM+8'
   })
-//  if(localStorage.getItem("curUser") !== "") {
-//     let storedUser = localStorage.getItem("curUser");
-//     let curUser = {
-//       avatar: storedUser.profile_image_url,
-//       city: storedUser.broadcaster_type,
-//       country: '',
-//       jobTitle: '',
-//       name: storedUser.login,
-//       timezone: 'GTM+8'
-//     };
 
-//     setUser(curUser);
-//   }
   let navigate = useNavigate();
   React.useEffect(() => {
     

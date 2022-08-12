@@ -12,51 +12,60 @@ import {
   TextField,
   InputAdornment,
   FormGroup,
+  Checkbox
 } from "@mui/material";
-import { ChatOutlined, ErrorOutlineOutlined, MoreTimeOutlined } from "@mui/icons-material/";
-import { useState, useEffect } from "react";
+import {
+  ChatOutlined,
+  ErrorOutlineOutlined,
+  MoreTimeOutlined,
+} from "@mui/icons-material/";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
-export const ShoutoutGeneral = (props) => {
-  let { channelname } = props;
-  let initValues = {
-    channel: channelname,
-    delay: 250,
-    enabled: true,
-    soCommand: "so",
-    soMessageEnabled: true,
-    soMessageTemplate: ""
+import { UserContext } from "../../pages/User/dashboard";
+let initValues = {
+  channel: "",
+  delay: 250,
+  enabled: true,
+  soCommand: "so",
+  soMessageEnabled: true,
+  soMessageTemplate: "",
+  filters: {
+    vip: true,
+    mod: true,
+    sub: true,
+    any: true
   }
-  const [genSettings, setGenSettings] = useState(initValues);
-
-  useEffect(() => {
-    // console.log(process.env);
-    let channel = "speeeedtv";
-    let genSettingsURL = 
-      process.env.REACT_APP_APIURL + "/channels/" + channel
-   
-    axios.get(genSettingsURL)
-      .then((res) => {
-        
-        setGenSettings(res.data);
-        console.log(genSettings);
-      });
-  }, []);
-
+};
+export const ShoutoutGeneral = (props) => {
+  const contextValue = useContext(UserContext);
+  console.log(contextValue);
   
+  const [genSettings, setGenSettings] = useState(initValues);
+  
+  useEffect(() => {
+    if(contextValue && contextValue.channel !== ""){
+      setGenSettings(contextValue);
+    }
+  },[contextValue])
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("ONSUBMIT")
+    console.log("ONSUBMIT");
     console.log(genSettings);
 
     const data = genSettings;
-    let updateSettingsURL = process.env.REACT_APP_APIURL + "/channels/saveGenSettings/speeeedtv"
-    axios.post(updateSettingsURL,data).then((res) => {
-      console.log(res)
-    }).catch((err) => {console.log(err);} );
+    let updateSettingsURL =
+      process.env.REACT_APP_APIURL + "/channels/saveGenSettings/" + contextValue;
+    axios
+      .post(updateSettingsURL, data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  }
-  
   return (
     <form {...props} onSubmit={handleSubmit}>
       <Card>
@@ -66,7 +75,6 @@ export const ShoutoutGeneral = (props) => {
         />
         <Divider />
         <CardContent>
-          
           <Grid container spacing={6} wrap="wrap">
             <Grid
               item
@@ -79,19 +87,34 @@ export const ShoutoutGeneral = (props) => {
                 Bot Enabled
               </Typography>
               <FormControlLabel
-                control={<Switch checked={genSettings.enabled} onChange={(e) => setGenSettings({...genSettings,enabled: e.target.checked})} />}
+                control={
+                  <Switch
+                    checked={genSettings.enabled}
+                    onChange={(e) =>
+                      setGenSettings({
+                        ...genSettings,
+                        enabled: e.target.checked,
+                      })
+                    }
+                  />
+                }
                 label="Bot is ON"
               />
               <Divider />
               <FormGroup sx={{ paddingTop: 2 }}>
-                <Typography color="textPrimary" gutterBottom variant="h6" >
+                <Typography color="textPrimary" gutterBottom variant="h6">
                   Shoutout command
                 </Typography>
                 <TextField
                   id="socmd"
                   label="Shoutout command"
                   value={genSettings.soCommand}
-                  onChange={(e) => setGenSettings({...genSettings, soCommand: e.target.value})}
+                  onChange={(e) =>
+                    setGenSettings({
+                      ...genSettings,
+                      soCommand: e.target.value,
+                    })
+                  }
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -99,18 +122,20 @@ export const ShoutoutGeneral = (props) => {
                       </InputAdornment>
                     ),
                   }}
-                  sx={{marginTop: 2}}
+                  sx={{ marginTop: 2 }}
                 />
               </FormGroup>
               <FormGroup sx={{ paddingTop: 2 }}>
-                <Typography color="textPrimary" gutterBottom variant="h6" >
+                <Typography color="textPrimary" gutterBottom variant="h6">
                   Delay
                 </Typography>
                 <TextField
                   id="socmd"
                   label="Delay"
                   value={genSettings.delay}
-                  onChange={(e) => setGenSettings({...genSettings, delay: e.target.value})}
+                  onChange={(e) =>
+                    setGenSettings({ ...genSettings, delay: e.target.value })
+                  }
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -118,7 +143,7 @@ export const ShoutoutGeneral = (props) => {
                       </InputAdornment>
                     ),
                   }}
-                  sx={{marginTop: 2}}
+                  sx={{ marginTop: 2 }}
                 />
               </FormGroup>
               <FormGroup sx={{ paddingTop: 2 }}>
@@ -126,13 +151,30 @@ export const ShoutoutGeneral = (props) => {
                   Shoutout message
                 </Typography>
                 <FormControlLabel
-                  control={<Switch checked={genSettings.soMessageEnabled} onChange={(e) => setGenSettings({...genSettings,soMessageEnabled: e.target.checked})} />}
+                  control={
+                    <Switch
+                      checked={genSettings.soMessageEnabled}
+                      onChange={(e) =>
+                        setGenSettings({
+                          ...genSettings,
+                          soMessageEnabled: e.target.checked,
+                        })
+                      }
+                    />
+                  }
                   label="Enabled"
                 />
-                
-                <TextField id="somsg" label="Shoutout message" 
+
+                <TextField
+                  id="somsg"
+                  label="Shoutout message"
                   value={genSettings.soMessageTemplate}
-                  onChange={(e) => setGenSettings({...genSettings, soMessageTemplate: e.target.value})}
+                  onChange={(e) =>
+                    setGenSettings({
+                      ...genSettings,
+                      soMessageTemplate: e.target.value,
+                    })
+                  }
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -140,12 +182,72 @@ export const ShoutoutGeneral = (props) => {
                       </InputAdornment>
                     ),
                   }}
-                  sx={{marginTop: 2}}
+                  sx={{ marginTop: 2 }}
+                />
+              </FormGroup>
+              <FormGroup sx={{ paddingTop: 2 }}>
+                <Typography color="textPrimary" gutterBottom variant="h6">
+                  Filters
+                </Typography>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={genSettings.filters.vip}
+                      onChange={(e) =>
+                        setGenSettings({
+                          ...genSettings,
+                          filters:{ ...genSettings.filters, vip: e.target.checked} ,
+                        })
+                      }
+                    />
+                  }
+                  label="VIPs"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={genSettings.filters.mod}
+                      onChange={(e) =>
+                        setGenSettings({
+                          ...genSettings,
+                          filters:{ ...genSettings.filters, mod: e.target.checked} ,
+                        })
+                      }
+                    />
+                  }
+                  label="MODs"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={genSettings.filters.sub}
+                      onChange={(e) =>
+                        setGenSettings({
+                          ...genSettings,
+                          filters:{ ...genSettings.filters, sub: e.target.checked} ,
+                        })
+                      }
+                    />
+                  }
+                  label="SUBs"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={genSettings.filters.any}
+                      onChange={(e) =>
+                        setGenSettings({
+                          ...genSettings,
+                          filters:{ ...genSettings.filters, any: e.target.checked} ,
+                        })
+                      }
+                    />
+                  }
+                  label="ANY"
                 />
               </FormGroup>
             </Grid>
           </Grid>
-         
         </CardContent>
         <Divider />
         <Box
@@ -155,7 +257,7 @@ export const ShoutoutGeneral = (props) => {
             p: 2,
           }}
         >
-          <Button color="primary" variant="contained" type="submit" >
+          <Button color="primary" variant="contained" type="submit">
             Save
           </Button>
         </Box>
