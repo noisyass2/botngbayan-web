@@ -70,7 +70,7 @@ export const ShoutoutGeneral = (props) => {
 
     const data = genSettings;
     let updateSettingsURL =
-      process.env.REACT_APP_APIURL + "/channels/saveGenSettings/" + contextValue;
+      process.env.REACT_APP_APIURL + "/channels/saveGenSettings/" + contextValue.channel;
     axios
       .post(updateSettingsURL, data)
       .then((res) => {
