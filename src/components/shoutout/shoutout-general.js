@@ -163,7 +163,7 @@ export const ShoutoutGeneral = (props) => {
                   sx={{ marginTop: 2 }}
                 />
               </FormGroup>
-              <FormGroup sx={{ paddingTop: 2 }}>
+              {/* <FormGroup sx={{ paddingTop: 2 }}>
                 <Typography color="textPrimary" gutterBottom variant="h6">
                   Shoutout message
                 </Typography>
@@ -201,7 +201,7 @@ export const ShoutoutGeneral = (props) => {
                   }}
                   sx={{ marginTop: 2 }}
                 />
-              </FormGroup>
+              </FormGroup> */}
               <FormGroup sx={{ paddingTop: 2 }}>
                 <Typography color="textPrimary" gutterBottom variant="h6">
                   Filters
