@@ -77,7 +77,11 @@ export function Landing() {
         </Grid>
       </header>
       <section>
+        
         <Grid container spacing={2} sx={{ paddingLeft: 2, paddingRight: 2 }}>
+          <Grid item xs={12} md={12}>
+          <h1>How to join bot_ng_bayan?</h1>
+          </Grid>
           <Grid item xs={12} md={6}>
             <Card sx={{ minWidth: 275, minHeight: 150 }}>
               <CardContent>
@@ -105,7 +109,7 @@ export function Landing() {
             <Card sx={{ minWidth: 275, minHeight: 150 }}>
               <CardContent>
                 <Typography variant="h5">
-                  Add <strong>bot_ng_bayan</strong> as a mod to your channel
+                  Go to  <strong>bot_ng_bayan</strong> chat and type <strong>!join</strong> 
                 </Typography>
               </CardContent>
               <CardActions>
@@ -123,6 +127,55 @@ export function Landing() {
               </CardActions>
             </Card>
           </Grid>
+          <Grid item xs={12} md={6}>
+            <Card sx={{ minWidth: 275, minHeight: 150 }}>
+              <CardContent>
+                <Typography variant="h5">
+                  Add <strong>bot_ng_bayan</strong> as a mod to your channel
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    handleClickOpen(
+                      "Mod bot_ng_bayan",
+                      "If you have shoutout clips showing on your overlay like twitchguru or streamer.help, you need to set bot_ng_bayan as a mod. You can do this by typing /mod bot_ng_bayan in your chat"
+                    );
+                  }}
+                >
+                  Learn More
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>          
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {content}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              
+              <Button onClick={handleClose} autoFocus>
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
+      </section>
+      <br></br>
+      <section>
+        <Grid container spacing={2} sx={{ paddingLeft: 2, paddingRight: 2 }}>   
+        <Grid item xs={12} md={12}>
+          <h1>How to support bot_ng_bayan?</h1>
+          </Grid>       
           <Grid item xs={12} md={6}>
             <Card sx={{ minWidth: 275, minHeight: 150 }}>
               <CardContent>
@@ -160,6 +213,24 @@ export function Landing() {
                   handleClickOpen(
                     "Follow speeeedtv",
                     "Click speeeedtv's twich link above and hit Follow. See the bot's progress live on his weekend streams."
+                  );
+                }}>Learn More</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Card sx={{ minWidth: 275, minHeight: 150 }}>
+              <CardContent>
+                <Typography variant="h5">
+                  Support us through <a href="https://ko-fi.com/speeeedtv">Ko-Fi</a>{" "}                  
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small"
+                onClick={() => {
+                  handleClickOpen(
+                    "Support bot_ng_bayan",
+                    "Every bit of support will go into the bot's server hosting and improvements."
                   );
                 }}>Learn More</Button>
               </CardActions>
